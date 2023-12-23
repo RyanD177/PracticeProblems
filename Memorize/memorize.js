@@ -2,13 +2,15 @@ function memorize(callback, resolver) {
 
     let cache = new Map();
 
-    function getCacheKey(...args) {
+    function getCacheKey(args) {
         return resolver != null ? resolver(...args) : JSON.stringify(args);
 
 
     }
     const memoized = function(...args) {
+      
         const cacheKey = getCacheKey(args);
+      
         if(cache.has(cacheKey)){
             return cache.get(cacheKey);
         }
@@ -20,18 +22,24 @@ function memorize(callback, resolver) {
     }
 
     memoized.clear = function () {
-        cache.clear()
+        cache.clear();
     }
-    memoized.delete = function () {
-        const cacheKey = getCacheKey(...args);
-        cache.delete(cacheKey);
+    memoized.delete = function (...args) {
+        const cacheKey = getCacheKey(args);
+         cache.delete(cacheKey);
 
     }
-    memoized.has = function () {
-
+    memoized.has = function (...args) {
+        const cacheKey = getCacheKey(args);
+ 
         
     }
-
+return memoized
 
 
 }
+
+
+
+
+exports.memoize = memorize;
